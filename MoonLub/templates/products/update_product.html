@@ -8,7 +8,7 @@ Edit Product
 <section>
     <div class="addform">
         <h3>Edit the product Details</h3>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{form.as_p}}
             <div class="adbtn">

@@ -26,6 +26,11 @@ def searchProductS(request):
             'query' : query,
             'products' : search_results
         }
+    else:
+        context ={
+            'query' : query,
+            'prducts' : None
+        }
     return render(request, template_name=template, context=context)
 
 # CRUD Operations using Generic Class Based Vies of Django

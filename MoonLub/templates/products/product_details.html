@@ -5,32 +5,29 @@ Product Details
 {% endblock %}
 
 {%block content %}
-<section class="d-flex row productdetail">
-    <div id="carouselExample" class="carousel slide col" data-bs-ride="carousel">
+<section class="d-flex productdetail">
+    <div id="carouselExample" class="carousel slide col" data-bs-ride="carousel" data-bs-interval="3000">
         <div>
             <div class="carbtns">
                 <a class="icon editcar"><i class="bi bi-pencil-square"></i></a>
                 <a class="icon delcar"><i class="bi bi-trash3"></i></a>
             </div>
-
             <div class="carousel-inner">
-                <div class="carousel-inner">
 
-                    {% if product.images.all %}
-                    {% for image in product.images.all %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <img src="{{ image.img.url }}" class="car" alt="{{ product.title }}">
-                    </div>
-                    {% endfor %}
-                    {% else %}
-                    <div class="carousel-item active no-image">
-                        <div class="no-image-box">
-                            <i class="bi bi-image"></i>
-                            <p>Image Not Available</p>
-                        </div>
-                    </div>
-                    {% endif %}
+                {% if product.images.all %}
+                {% for image in product.images.all %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <img src="{{ image.img.url }}" class="car" alt="{{ product.title }}">
                 </div>
+                {% endfor %}
+                {% else %}
+                <div class="carousel-item active no-image">
+                    <div class="no-image-box">
+                        <i class="bi bi-image"></i>
+                        <p>Image Not Available</p>
+                    </div>
+                </div>
+                {% endif %}
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
