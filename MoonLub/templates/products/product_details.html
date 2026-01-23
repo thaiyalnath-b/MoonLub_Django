@@ -42,7 +42,7 @@ Product Details
             </button>
         </div>
     </div>
-    
+
     <div class="col details">
         <img src="{{product.thumbnail.url}}" alt="">
         <h2>{{product.title}}</h2>
@@ -54,5 +54,12 @@ Product Details
             <a href="{% url 'delete_product' product.pk %}" class="btn delete">Delete</a>
         </div>
     </div>
+</section>
+<section class="m-3">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" class="btn btn-outline-success">Upload</button>
+    </form>
 </section>
 {% endblock %}

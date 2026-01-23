@@ -38,13 +38,22 @@ class CreateProduct(CreateView):
     fields = '__all__'
     success_url = '/'
 
-class ProductDetail(DetailView):
+from django.views.generic.edit import FormMixin
+from .forms import ProductImageForm
+
+class ProductDetail(FormMixin, DetailView):
     model = Product
     template_name = 'products/product_details.html'
     context_object_name = 'product'
+    form_class = ProductImageForm
 
     def get_queryset(self):
         return Product.objects.prefetch_related('images')
+    
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['ExtraDetail'] = 'This is Extra Added Details'
+    #     return context
 
 class UpdateProduct(UpdateView):
     model = Product
