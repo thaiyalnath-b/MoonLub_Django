@@ -14,22 +14,34 @@ Delete Product
 
             <p class="warning-text">
                 Are you sure you want to delete
-                <strong>{{product.title}}</strong>?
+                <strong>{{ product.title }}</strong>?
                 This action cannot be undone.
             </p>
 
-            <img src="{{product.thumbnail.url}}" alt="" class="product-img">
+            <img src="{{ product.thumbnail.url }}" alt="{{ product.title }}" class="product-img">
 
-            <h3 class="product-title">{{product.title}}</h3>
+            <h3 class="product-title">{{ product.title }}</h3>
 
-            <p class="desc">{{product.desc}}</p>
+            <p class="desc">{{ product.desc }}</p>
 
-            <p class="rs"><span>Price:</span> &#8377; {{product.price}}</p>
+            <p class="rs"><span>Price:</span> &#8377; {{ product.price }}</p>
 
-            {{ form.as_p }}
+            <!-- Confirmation checkbox -->
+            <label class="confirm-check">
+                <input type="checkbox" required>
+                I understand that this action cannot be undone
+            </label>
 
-            <button type="submit" class="delete-btn">Delete Product</button>
+            <div class="actions">
+                <button type="submit" class="delete-btn">
+                    Delete Product
+                </button>
+                <a href="{% url 'products' %}" class="back-btn">
+                    Cancel
+                </a>
+            </div>
         </form>
+
     </div>
 </section>
 
