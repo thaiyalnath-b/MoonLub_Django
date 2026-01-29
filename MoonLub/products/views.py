@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse, reverse_lazy
 
 from .models import Product
 # Create your views here.
@@ -26,12 +27,9 @@ def searchProductS(request):
             'query' : query,
             'products' : search_results
         }
+        return render(request, template_name=template, context=context)
     else:
-        context ={
-            'query' : query,
-            'prducts' : None
-        }
-    return render(request, template_name=template, context=context)
+        return redirect(reverse_lazy('home_page'))
 
 # CRUD Operations using Generic Class Based Vies of Django
 from django.views.generic import (CreateView, DetailView,
@@ -52,6 +50,19 @@ class ProductDetail(FormMixin, DetailView):
     context_object_name = 'product'
     form_class = ProductImageForm
 
+    def get_success_url(self):
+        return reverse("product_details", kwargs={'pk':self.object.pk})
+    
+    def post(self, request, *ars, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+
+        if form.is_valid():
+            image = form.save(commit = False)
+            image.product = self.object
+            image.save()
+            return redirect(self.get_success_url())
+
     def get_queryset(self):
         return Product.objects.prefetch_related('images')
     
@@ -69,5 +80,35 @@ class UpdateProduct(UpdateView):
 class DeleteProduct(DeleteView):
     model = Product
     template_name = 'products/delete_product.html'
-    fields = '__all__'
     success_url = '/'
+
+# Edit Product Image
+from .models import ProductImage
+
+class EditProductImage(UpdateView):
+    model = ProductImage
+    template_name = 'products/image_edit.html'
+    fields = '__all__'
+    context_object_name = 'image'
+
+    def get_success_url(self):
+        return reverse('product_details', kwargs={'pk':self.object.product.pk})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['product'] = self.object.product
+        return context
+    
+class DeleteProductImage(DeleteView):
+    model = ProductImage
+    template_name = 'products/image_delete.html'
+    context_object_name = 'image'
+
+    def get_success_url(self):
+        return reverse('product_details', kwargs={'pk':self.object.product.pk})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['product'] = self.object.product
+        return context
+    
