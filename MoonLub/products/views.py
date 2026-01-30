@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 
 from .models import Product
+
+from .forms import ProductForm, ProductImageForm
 # Create your views here.
 def productsView(request):
     template = 'products/product.html'
@@ -38,11 +40,10 @@ from django.views.generic import (CreateView, DetailView,
 class CreateProduct(CreateView):
     model = Product
     template_name = 'products/add_product.html'
-    fields = '__all__'
+    form_class = ProductForm
     success_url = '/'
 
 from django.views.generic.edit import FormMixin
-from .forms import ProductImageForm
 
 class ProductDetail(FormMixin, DetailView):
     model = Product
@@ -74,7 +75,7 @@ class ProductDetail(FormMixin, DetailView):
 class UpdateProduct(UpdateView):
     model = Product
     template_name = 'products/update_product.html'
-    fields = '__all__'
+    form_class = ProductForm
     success_url = '/'
 
 class DeleteProduct(DeleteView):
@@ -88,7 +89,7 @@ from .models import ProductImage
 class EditProductImage(UpdateView):
     model = ProductImage
     template_name = 'products/image_edit.html'
-    fields = '__all__'
+    form_class = ProductImageForm
     context_object_name = 'image'
 
     def get_success_url(self):

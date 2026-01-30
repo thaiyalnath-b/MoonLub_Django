@@ -6,10 +6,26 @@ Register
 {% block content %}
 <section class="registerform">
     <div class="card mx-auto w-50">
-        <form method="post" enctype="multipart/form-data">
+        <h3 class="text-center">
+            Register Account
+        </h3>
+        <form method="post">
             {% csrf_token %}
-            {{form.as_p}}
-            <button type="submit" class="btn btn-outline-info">Register</button>
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{form.non_field_errors}}
+            </div>
+            {% endif %}
+            {% for field in form %}
+            {% include 'base/includes/basic_form_field.html' %}
+            {% endfor %}
+            <button type="submit" class="button">
+                Register
+            </button>
+            <p class="text-center mt-4 mb-0">
+                Already have an account?
+                <a href="{% url 'signin' %}">Login</a>
+            </p>
         </form>
     </div>
 </section>
