@@ -11,7 +11,6 @@ from products.models import Product
 
 class AddToCart(View):
     def post(self, request, *args, **kwargs):
-        # if user is not logged in
         if not request.user.is_authenticated:
             return JsonResponse({
                 'error' : 'login_required',
@@ -30,6 +29,7 @@ class AddToCart(View):
         item.quantity += 1
         item.save()
         cart_count = CartItem.objects.filter(user = request.user).count()
+        print("Cart count is", cart_count)
 
         return JsonResponse({
             'message' : f'{this_product.title.capitalize()} was added to cart',
@@ -42,8 +42,12 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def view_cart(request):
     cart_items = CartItem.objects.filter(user = request.user)
+    total_quantity = sum(item.quantity for item in cart_items)
+    total_price = sum(item.subtotal for item in cart_items)
     context = {
-        'cart_items' : cart_items
+        'cart_items' : cart_items,
+        'total_quantity' : total_quantity,
+        'total_price' : total_price,
     }
     template = 'cart/cart.html'
     return render(request, template_name=template, context=context)
